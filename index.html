@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cisco TelePresence Conductor PHP Client</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" />
+    <style type="text/css" media="screen">
+        select:not([multiple]) {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-position: right 50%;
+            background-repeat: no-repeat;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
+        }
+
+        .input-group-sm>.input-group-btn>select.btn:not([size]):not([multiple]), .input-group-sm>select.form-control:not([size]):not([multiple]), .input-group-sm>select.input-group-addon:not([size]):not([multiple]), select.form-control-sm:not([size]):not([multiple]) {
+            height: 1.7125rem;
+        }
+
+        body { font-size: 15px; }
+        .page-wrapper { padding: 5px 15px; }
+        .pad5 { padding: 5px; }
+        .margin5 { margin: 5px; }
+        .mt5 { margin-top: 5px; }
+        .mt15 { margin-top: 15px; }
+        .mb5 { margin-bottom: 5px; }
+
+        .btn,
+        .form-control,
+        .input-group-addon { border-radius: 0 !important; }
+        .btn-group label.btn { margin-bottom: 0; }
+
+        .layui-layer-shade { opacity: 0.12 !important; }
+        .layui-layer-loading .layui-layer-content { background-size: 60px 60px !important; height: 60px !important; }
+        .layui-layer-btn .layui-layer-btn0 { color: #fff !important;  }
+
+        #mdl-help ul { list-style: none; padding-left: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container page-wrapper">
+        <!-- 会议控制 -->
+        <section class="row pad5">
+            <div class="col-xs-5">
+                <div class="input-group">
+                    <span class="input-group-addon">会议</span>
+                    <input type="text" name="conferenceName" id="conferenceName" class="form-control" value="" placeholder="会议名称" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" id="btn-start-conf">
+                            <i class="fa fa-play"></i>
+                            <span>启动</span>
+                        </button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning btn-block" id="btn-end-conf">
+                            <i class="fa fa-stop"></i>
+                            <span>终止</span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <button class="btn btn-primary btn-block" id="btn-conf-list">
+                    <i class="fa fa-list-ul"></i>
+                    <span>刷新在线会议</span>
+                </button>
+            </div>
+            <div class="col-xs-3">
+                <button class="btn btn-info btn-block" id="btn-participant-list">
+                    <i class="fa fa-list-ul"></i>
+                    <span>刷新当前会议与会者</span>
+                </button>
+            </div>
+            <div class="col-xs-1">
+                <button class="btn btn-secondary btn-block" id="btn-refresh-page" onclick="window.location.reload()">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试用户列表 -->
+        <section id="user-list-wrapper" class="mt15">
+            <h6>测试用户列表</h6>
+            <table id="user-list" class="table table-sm">
+                <thead class="thead-default">
+                    <tr>
+                        <th>用户名</th>
+                        <th>地址</th>
+                        <th>协议</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list-body">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="cellName">
+                            <input type="text" class="form-control form-control-sm" />
+                        </td>
+                        <td class="cellAddr">
+                            <input type="text" class="form-control form-control-sm" />
+                        </td>
+                        <td class="cellProtocol">
+                            <select name="cellProtocol" class="form-control form-control-sm">
+                                <option value="sip">SIP</option>
+                                <option value="h323">H.323</option>
+                                <option value="vnc">VNC</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    form-input
+                                    class="btn btn-sm btn-success user-opt-add"
+                                    data-toggle="tooltip" data-placement="top" title="加入与会者">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                邀请加入会议
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+
+        <!-- 当前会议与会者列表 -->
+        <section id="cur-user-list-wrapper" class="mt15">
+            <h6>当前会议与会者列表</h6>
+            <table id="cur-user-list" class="table table-sm">
+                <thead class="thead-default">
+                    <tr>
+                        <th>用户ID</th>
+                        <th>用户名</th>
+                        <th>地址</th>
+                        <th>协议</th>
+                        <th>类型</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="cur-user-list-body">
+                    <tr>
+                        <td colspan="7" class="text-xs-center">暂未取得</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 在线会议列表 -->
+        <section id="conf-list-wrapper" class="mt15">
+            <h6>在线会议列表</h6>
+            <table id="conf-list" class="table table-sm">
+                <thead class="thead-default">
+                    <tr>
+                        <th>会议ID</th>
+                        <th>会议名称</th>
+                        <th>模板类型</th>
+                        <th>是否级联</th>
+                        <th>WebEx支持</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="conf-list-body">
+                    <tr>
+                        <td colspan="6" class="text-xs-center">暂未取得</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 帮助信息 -->
+        <section id="mdl-help" class="alert alert-info m-t-2">
+            <div class="container-fluid">
+                <div class="col-xs-6">
+                    <div class="well">
+                    <h6>操作已经在线的会议</h6>
+                    <ul>
+                        <li>1. 刷新在线会议</li>
+                        <li>2. 在线会议列表项目中，点击设定当前会议</li>
+                        <li>3. 刷新当前会议与会者</li>
+                        <li>4. 后续其他操作</li>
+                    </ul></div>
+                </div>
+                <div class="col-xs-6">
+                    <h6>操作新建会议</h6>
+                    <ul>
+                        <li>1. 输入会议名称，点击【启动】开启会议</li>
+                        <li>2. 后续其他操作</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script id="confChangeLayoutModal" type="text/template">
+        <div class="container-fluid pad5" style="padding: 15px;">
+        <form id="confChangeLayoutForm" class="form form-horizontal" method="post" accept-charset="utf-8">
+            <input type="hidden" id="changeLayoutConferenceId" name="factoryConferenceId" value="" />
+            <div class="form-group row">
+                <label for="customLayoutEnabledInput" class="col-xs-4 col-form-label">自定义布局</label>
+                <div class="col-xs-8">
+                    <label class="form-check-inline">
+                        <input type="radio" class="form-check-input" name="customLayoutEnabled" id="customLayoutEnabledInput" value="1" checked>
+                        启用
+                    </label>
+                    <label class="form-check-inline">
+                        <input type="radio" class="form-check-input" name="customLayoutEnabled" id="customLayoutEnabledInput2" value="0">
+                        不启用
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="newParticipantsCustomLayoutInput" class="col-xs-4 col-form-label">自动应用自定义布局</label>
+                <div class="col-xs-8">
+                    <label class="form-check-inline">
+                        <input type="radio" class="form-check-input" name="newParticipantsCustomLayout" id="newParticipantsCustomLayoutInput" value="1" checked>
+                        是
+                    </label>
+                    <label class="form-check-inline">
+                        <input type="radio" class="form-check-input" name="newParticipantsCustomLayout" id="newParticipantsCustomLayoutInput2" value="0">
+                        否
+                    </label>
+                    <small class="form-text text-muted">决定新加入的与会者是否应用自定义的布局</small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="customLayoutInput" class="col-xs-4 col-form-label">自定义布局</label>
+                <div class="col-xs-8">
+                    <select name="customLayout" id="customLayoutInput" class="form-control">
+                        <option value="0">无布局</option>
+                        <option value="1">单主会场布局</option>
+                        <option value="2">平铺布局</option>
+                        <option value="5">主分会场布局</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        </div>
+    </script>
+
+    <script id="confTpl" type="text/template">
+        {{# for(var i = 0, len = d.length; i < len; i++){ }}
+        <tr>
+            <td class="cellId">{{ d[i].factoryConferenceId }}</td>
+            <td class="cellName">{{ d[i].conferenceName?d[i].conferenceName:(store.get(d[i].factoryConferenceId)?store.get(d[i].factoryConferenceId):'未知') }}</td>
+            <td>{{ d[i].factoryTemplateType }}</td>
+            <td>{{ d[i].isCascaded }}</td>
+            <td>{{ d[i].factoryWebEx }}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm conf-opt-cur"
+                        data-conferenceid="{{ d[i].factoryConferenceId }}"
+                        data-conferencename="{{ d[i].conferenceName?d[i].conferenceName:(store.get(d[i].factoryConferenceId)?store.get(d[i].factoryConferenceId):'') }}"
+                        data-toggle="tooltip" data-placement="top" title="设为当前会议">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-info btn-sm conf-opt-edit"
+                        data-conferenceid="{{ d[i].factoryConferenceId }}"
+                        data-conferencename="{{ d[i].conferenceName?d[i].conferenceName:(store.get(d[i].factoryConferenceId)?store.get(d[i].factoryConferenceId):'') }}"
+                        data-toggle="tooltip" data-placement="top" title="修改会议布局设置">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-warning btn-sm conf-opt-end"
+                        data-conferenceid="{{ d[i].factoryConferenceId }}"
+                        data-conferencename="{{ d[i].conferenceName?d[i].conferenceName:(store.get(d[i].factoryConferenceId)?store.get(d[i].factoryConferenceId):'') }}"
+                        data-toggle="tooltip" data-placement="top" title="终止会议">
+                    <i class="fa fa-stop" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
+        {{# } }}
+    </script>
+
+    <script id="userTpl" type="text/template">
+        {{# for(var i = 0, len = d.length; i < len; i++){ }}
+        <tr>
+            <td class="cellName">{{ d[i].userId }}</td>
+            <td class="cellAddr">{{ d[i].address }}</td>
+            <td class="cellProtocol">{{ d[i].protocol.toUpperCase() }}</td>
+            <td>
+                <button type="button"
+                        class="btn btn-sm btn-success user-opt-add"
+                        data-userid="{{ d[i].userId }}"
+                        data-toggle="tooltip" data-placement="top" title="加入与会者">
+                    <i class="fa fa-user-plus" aria-hidden="true"></i>
+                    邀请加入会议
+                </button>
+            </td>
+        </tr>
+        {{# } }}
+    </script>
+
+    <script id="userApiTpl" type="text/template">
+        {{# for(var i = 0, len = d.length; i < len; i++){ }}
+        <tr>
+            <td class="cellId">{{ d[i].participantName }}</td>
+            <td class="cellName">{{ d[i].participantReference?d[i].participantReference:'未知' }}</td>
+            <td class="cellAddr">{{ d[i].currentState.address }}</td>
+            <td class="cellProtocol">{{ d[i].participantProtocol.toUpperCase() }}</td>
+            <td class="cellType">{{ d[i].participantType }}</td>
+            <td class="cellState">{{ d[i].currentState.callState }}</td>
+            <td>
+                <div class="btn-group" data-toggle="buttons">
+                    <button type="button"
+                            class="btn btn-sm btn-success user-opt-add"
+                            data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                            data-conferenceid="{{ d[i].factoryConferenceId }}"
+                            data-toggle="tooltip" data-placement="top" title="加入与会者">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-danger user-opt-remove"
+                            data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                            data-conferenceid="{{ d[i].factoryConferenceId }}"
+                            data-toggle="tooltip" data-placement="top" title="移除与会者">
+                        <i class="fa fa-user-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="btn-group" data-toggle="buttons">
+                    <button type="button"
+                            class="btn btn-sm btn-success user-opt-video active"
+                            data-muted="0"
+                            data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                            data-conferenceid="{{ d[i].factoryConferenceId }}"
+                            data-toggle="tooltip" data-placement="top" title="开启与会者视频">
+                        <i class="fa fa-video-camera" aria-hidden="true"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-warning user-opt-video"
+                            data-muted="1"
+                            data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                            data-conferenceid="{{ d[i].factoryConferenceId }}"
+                            data-toggle="tooltip" data-placement="top" title="关闭与会者视频">
+                        <i class="fa fa-ban" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="btn-group" data-toggle="buttons">
+                    <button type="button"
+                            class="btn btn-sm btn-success user-opt-audio active"
+                            data-muted="0"
+                            data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                            data-conferenceid="{{ d[i].factoryConferenceId }}"
+                            data-toggle="tooltip" data-placement="top" title="开启与会者音频">
+                        <i class="fa fa-volume-up" aria-hidden="true"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-warning user-opt-audio"
+                            data-muted="1"
+                            data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                            data-conferenceid="{{ d[i].factoryConferenceId }}"
+                            data-toggle="tooltip" data-placement="top" title="关闭与会者音频">
+                        <i class="fa fa-volume-off" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <button type="button" class="btn btn-info btn-sm user-opt-msg"
+                        data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                        data-conferenceid="{{ d[i].factoryConferenceId }}"
+                        data-toggle="tooltip" data-placement="top" title="发送消息">
+                    <i class="fa fa-comment" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-info btn-sm user-opt-edit"
+                        data-userid="{{ d[i].participantName }}" data-username="{{ d[i].participantReference }}"
+                        data-conferenceid="{{ d[i].factoryConferenceId }}"
+                        data-toggle="tooltip" data-placement="top" title="修改显示名称">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
+        {{# } }}
+    </script>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/tether.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/layer/layer.js"></script>
+    <script src="assets/js/laytpl.js"></script>
+    <script src="assets/js/store.min.js"></script>
+
+    <script type="text/javascript">
+        if (!store.enabled) {
+            alert('您的浏览器不支持本地存储，请禁用隐私模式或者升级到更高版本的浏览器。');
+        }
+
+        // 后台地址
+        var baseUrl = "serv.php?";
+        // 用户数据
+        var userList = [
+            {
+                userId: '86000030',
+                address: '86000030@xst365.com',
+                protocol: 'SIP',
+            },
+            {
+                userId: '86000031',
+                address: '86000031',
+                protocol: 'H.323',
+            },
+            {
+                userId: '86000032',
+                address: '86000032@xst365.com',
+                protocol: 'SIP',
+            },
+            {
+                userId: '86000033',
+                address: '86000033',
+                protocol: 'H.323',
+            }
+        ];
+
+        // Ajax 全局配置
+        $(document).ajaxStart(function() {
+            layer.load();
+        }).ajaxStop(function() {
+            setTimeout(function() {
+                layer.closeAll('loading');
+            }, 1000);
+        });
+
+        // 渲染用户列表
+        var userTpl = document.getElementById('userTpl').innerHTML;
+        laytpl(userTpl).render(userList, function(html){
+            document.getElementById('user-list-body').innerHTML = html;
+        });
+
+        $(function() {
+            // $('[data-toggle="tooltip"]').tooltip();
+            $('body').tooltip({
+                selector: '[data-toggle="tooltip"]'
+            });
+
+            // 加载会议
+            $('#btn-conf-list').on('click', function() {
+                loadConfList();
+            });
+            // 开启会议
+            $('#btn-start-conf').on('click', function() {
+                if (!$('#conferenceName').val()) {
+                    layer.alert("请输入会议名称");
+                    return;
+                }
+
+                startConference($('#conferenceName').val());
+            });
+            // 关闭会议
+            $(document).on('click', '#btn-end-conf, .conf-opt-end', function() {
+                if (!$(this).hasClass('conf-opt-end') && !$('#conferenceName').val()) {
+                    layer.alert("请输入会议名称");
+                    return;
+                }
+
+                if ($(this).hasClass('conf-opt-end')) {
+                    var confName = $(this).closest('tr').find('.cellName').text();
+                } else {
+                    var confName = $('#conferenceName').val();
+                }
+
+                endConference(confName);
+
+                // 隐藏可能驻停的 tooltip
+                if ($(this).hasClass('conf-opt-end')) {
+                    $('.tooltip').hide();
+                }
+            });
+            // 设为当前会议
+            $(document).on('click', '.conf-opt-cur', function() {
+                var tr = $(this).closest('tr');
+                var confId = $(this).data('conferenceid');
+
+                $('#conferenceName').data('conferenceid', confId);
+
+                if (tr.find('.cellName').text()) {
+                    $('#conferenceName').val(tr.find('.cellName').text());
+                }
+                else if (store.get(confId)) {
+                    $('#conferenceName').val(store.get(confId));
+                }
+
+                loadParticipantList(confId);
+            });
+            // 调整会议配置
+            $(document).on('click', '.conf-opt-edit', function() {
+                layer.open({
+                    type: 1,
+                    title: '修改会议布局设置',
+                    area: ['600px'],
+                    btn: ['确定', '取消'],
+                    yes: function() {
+                        var qArr = [];
+                        qArr.push('action=cd');
+                        $.post(baseUrl + qArr.join('&'), $('#confChangeLayoutForm').serialize(), function(result) {
+                            if (result.success) {
+                                layer.msg("修改成功", function() {
+                                    layer.closeAll();
+                                });
+                            } else {
+                                layer.alert(result.msg);
+                            }
+                        });
+                    },
+                    shadeClose: true,
+                    content: document.getElementById("confChangeLayoutModal").innerHTML
+                });
+                $('#changeLayoutConferenceId').val($(this).data('conferenceid'));
+            });
+
+            // 加载与会者
+            $('#btn-participant-list').on('click', function() {
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                loadParticipantList($('#conferenceName').data('conferenceid'));
+            });
+            // 添加与会者
+            $(document).on('click', '.user-opt-add', function() {
+                var tr = $(this).closest('tr');
+
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                var confId = $('#conferenceName').data('conferenceid'),
+                    confName = $('#conferenceName').val(),
+                    confName = confName?confName:store.get(confId);
+
+                if ($(this).is('[form-input]')) {
+                    var userName = tr.find('.cellName .form-control').val();
+                    var userAddr = tr.find('.cellAddr .form-control').val();
+                    var userProtocol = tr.find('.cellProtocol .form-control').val();
+                } else {
+                    var userName = tr.find('.cellName').text();
+                    var userAddr = tr.find('.cellAddr').text();
+                    var userProtocol = tr.find('.cellProtocol').text();
+                }
+
+                // 执行添加
+                addParticipant(confId, confName, userName, userAddr, userProtocol);
+            });
+            // 移除与会者
+            $(document).on('click', '.user-opt-remove', function() {
+                var tr = $(this).closest('tr');
+
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                var confId = $('#conferenceName').data('conferenceid'),
+                    confName = $('#conferenceName').val(),
+                    confName = confName?confName:store.get(confId);
+
+                // 执行移除
+                removeParticipant(
+                    confId,
+                    confName,
+                    tr.find('.cellId').text(), // 实际用的是API中的participantName, 系统作为ID使用
+                    tr.find('.cellProtocol').text(),
+                    tr.find('.cellType').length > 0 ? tr.find('.cellType').text() : 'ad_hoc'
+                );
+
+                // 隐藏可能驻停的 tooltip
+                $('.tooltip').hide();
+            });
+            // 修改视频状态
+            $(document).on('click', '.user-opt-video', function() {
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                var tr = $(this).closest('tr');
+
+                // 执行移除
+                changeParticipantVideoState(
+                    $('#conferenceName').val()?$('#conferenceName').val():store.get($('#conferenceName').data('conferenceid')),
+                    tr.find('.cellId').text(), // 实际用的是API中的participantName, 系统作为ID使用
+                    $(this).data('muted'),
+                    tr.find('.cellProtocol').text(),
+                    tr.find('.cellType').length > 0 ? tr.find('.cellType').text() : 'ad_hoc'
+                );
+
+                // 改变状态
+                $('.user-opt-video').removeClass('active');
+                $(this).addClass('active');
+            });
+            // 修改音频状态
+            $(document).on('click', '.user-opt-audio', function() {
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                var tr = $(this).closest('tr');
+
+                // 执行移除
+                changeParticipantAudioState(
+                    $('#conferenceName').val()?$('#conferenceName').val():store.get($('#conferenceName').data('conferenceid')),
+                    tr.find('.cellId').text(), // 实际用的是API中的participantName, 系统作为ID使用
+                    $(this).data('muted'),
+                    tr.find('.cellProtocol').text(),
+                    tr.find('.cellType').length > 0 ? tr.find('.cellType').text() : 'ad_hoc'
+                );
+
+                // 改变状态
+                $('.user-opt-audio').removeClass('active');
+                $(this).addClass('active');
+            });
+            // 修改与会者显示名称
+            $(document).on('click', '.user-opt-edit', function() {
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                var tr = $(this).closest('tr');
+
+                layer.prompt({
+                        title: '修改显示名称',
+                        formType: 0
+                    }, function(displayName) {
+                        if (!displayName) {
+                            layer.alert('请输入显示名称');
+                            return;
+                        }
+                        // 执行移除
+                        changeParticipantName(
+                            $('#conferenceName').val()?$('#conferenceName').val():store.get($('#conferenceName').data('conferenceid')),
+                            tr.find('.cellId').text(), // 实际用的是API中的participantName, 系统作为ID使用
+                            1,
+                            displayName,
+                            tr.find('.cellProtocol').text(),
+                            tr.find('.cellType').length > 0 ? tr.find('.cellType').text() : 'ad_hoc'
+                        );
+                    });
+            });
+            // 修改与会者显示名称
+            $(document).on('click', '.user-opt-msg', function() {
+                if (!$('#conferenceName').data('conferenceid')) {
+                    layer.alert("未设定当前会议");
+                    return;
+                }
+
+                var tr = $(this).closest('tr');
+
+                layer.prompt({
+                        title: '发送消息',
+                        formType: 2
+                    }, function(msgContent) {
+                        if (!msgContent) {
+                            layer.alert('请输入消息内容');
+                            return;
+                        }
+
+                        // 执行移除
+                        sendParticipantMessage(
+                            $('#conferenceName').val()?$('#conferenceName').val():store.get($('#conferenceName').data('conferenceid')),
+                            tr.find('.cellId').text(), // 实际用的是API中的participantName, 系统作为ID使用
+                            msgContent,
+                            tr.find('.cellProtocol').text(),
+                            tr.find('.cellType').length > 0 ? tr.find('.cellType').text() : 'ad_hoc'
+                        );
+                    });
+            });
+
+            // // 取得在线会议
+            // loadConfList();
+        });
+
+        // 加载在线会议
+        function loadConfList() {
+            var qArr = [];
+            qArr.push('action=cl');
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                $('#conf-list-body').empty();
+                if (result.success && result.conferences.length > 0) {
+                    // 渲染用户列表
+                    var confTpl = document.getElementById('confTpl').innerHTML;
+                    laytpl(confTpl).render(result.conferences, function(html){
+                        document.getElementById('conf-list-body').innerHTML = html;
+                    });
+                } else if(result.success) {
+                    $('<tr><td colspan="6" class="text-xs-center">暂无在线会议</td></tr>').appendTo('#conf-list-body');
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 开启会议
+        function startConference(confName) {
+            var qArr = [];
+            qArr.push('action=cc');
+            qArr.push('conferenceName=' + encodeURIComponent(confName+"@"));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success && result.conferenceId) {
+                    $('#conferenceName').data('conferenceid', result.conferenceId);
+
+                    // 缓存会议名称和ID的对应关系
+                    store.set(result.conferenceId, confName);
+
+                    layer.msg("会议开启成功");
+
+                    loadConfList();
+                    loadParticipantList(result.conferenceId);
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 关闭会议
+        function endConference(confName) {
+            var qArr = [];
+            qArr.push('action=ce');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    var confId = $('#conferenceName').data('conferenceid');
+                    $('#conferenceName').data('conferenceid', null);
+
+                    // 取消缓存会议名称和ID的对应关系
+                    store.remove(result.conferenceId);
+
+                    layer.msg("会议已关闭");
+
+                    // 延时重新加载会议列表
+                    setTimeout(function() {
+                        loadConfList();
+                        loadParticipantList(confId);
+                    }, 1500);
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 加载指定会议用户列表
+        function loadParticipantList(confId) {
+            var qArr = [];
+            qArr.push('action=pl');
+            qArr.push('factoryConferenceIds=' + encodeURIComponent(confId));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                $('#cur-user-list-body').empty();
+                if (result.success && result.participants.length > 0) {
+                    // 渲染用户列表
+                    var userTpl = document.getElementById('userApiTpl').innerHTML;
+                    laytpl(userTpl).render(result.participants, function(html){
+                        document.getElementById('cur-user-list-body').innerHTML = html;
+                    });
+                } else if(result.success) {
+                    $('<tr><td colspan="7" class="text-xs-center">暂无在线与会者</td></tr>').appendTo('#cur-user-list-body');
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 添加与会者
+        function addParticipant(confId, confName, participantName, address, protocol) {
+            var qArr = [];
+            qArr.push('action=pc');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+            qArr.push('participantName=' + encodeURIComponent(participantName));
+            qArr.push('address=' + encodeURIComponent(address));
+            qArr.push('participantProtocol=' + encodeURIComponent(protocol));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    layer.msg("与会者添加成功");
+
+                    // 延时重新加载与会者列表
+                    setTimeout(function() {
+                        loadParticipantList(confId);
+                    }, 1500);
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 移除与会者
+        function removeParticipant(confId, confName, participantName, protocol, pType) {
+            var qArr = [];
+            qArr.push('action=pr');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+            qArr.push('participantName=' + encodeURIComponent(participantName));
+            qArr.push('participantProtocol=' + encodeURIComponent(protocol));
+            qArr.push('participantType=' + encodeURIComponent(pType));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    layer.msg("与会者已被移除");
+
+                    // 延时重新加载与会者列表
+                    setTimeout(function() {
+                        loadParticipantList(confId);
+                    }, 1500);
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 修改与会者音频状态
+        function changeParticipantAudioState(confName, participantName, audioRxMuted, protocol, pType) {
+            var qArr = [];
+            qArr.push('action=pa');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+            qArr.push('participantName=' + encodeURIComponent(participantName));
+            qArr.push('audioRxMuted=' + encodeURIComponent(audioRxMuted));
+            qArr.push('participantProtocol=' + encodeURIComponent(protocol));
+            qArr.push('participantType=' + encodeURIComponent(pType));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    layer.msg("音频状态已变更");
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 修改与会者视频状态
+        function changeParticipantVideoState(confName, participantName, videoRxMuted, protocol, pType) {
+            var qArr = [];
+            qArr.push('action=pv');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+            qArr.push('participantName=' + encodeURIComponent(participantName));
+            qArr.push('videoRxMuted=' + encodeURIComponent(videoRxMuted));
+            qArr.push('participantProtocol=' + encodeURIComponent(protocol));
+            qArr.push('participantType=' + encodeURIComponent(pType));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    layer.msg("视频状态已变更");
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 修改与会者显示名称
+        function changeParticipantName(confName, participantName, displayNameOverrideStatus, displayNameOverrideValue, protocol, pType) {
+            var qArr = [];
+            qArr.push('action=pn');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+            qArr.push('participantName=' + encodeURIComponent(participantName));
+            qArr.push('displayNameOverrideStatus=' + encodeURIComponent(displayNameOverrideStatus));
+            qArr.push('displayNameOverrideValue=' + encodeURIComponent(displayNameOverrideValue));
+            qArr.push('participantProtocol=' + encodeURIComponent(protocol));
+            qArr.push('participantType=' + encodeURIComponent(pType));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    layer.msg("显示名称修改成功");
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+        // 给与会者发送消息
+        function sendParticipantMessage(confName, participantName, message, protocol, pType) {
+            var qArr = [];
+            qArr.push('action=ps');
+            qArr.push('conferenceName=' + encodeURIComponent(confName));
+            qArr.push('participantName=' + encodeURIComponent(participantName));
+            qArr.push('message=' + encodeURIComponent(message));
+            qArr.push('participantProtocol=' + encodeURIComponent(protocol));
+            qArr.push('participantType=' + encodeURIComponent(pType));
+
+            $.get(baseUrl+qArr.join('&'), function(result) {
+                if (result.success) {
+                    layer.msg("消息已发送");
+                } else {
+                    layer.alert(result.msg);
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
