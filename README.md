@@ -12,6 +12,9 @@ Cisco TelePresence Conductor API client written in PHP
 
 `git clone https://github.com/purezhi/mcu.git`
 
+3. Install dependencies.
+
+`composer update`
 
 ## configuration
 
